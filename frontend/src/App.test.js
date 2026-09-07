@@ -1,4 +1,5 @@
 import { fetchPosts, fetchPost } from './api/posts';
+import { fetchGuestbook, createGuestbookEntry } from './api/guestbook';
 
 // App.js(및 그 하위 페이지)는 react-router-dom을 가져오는데, CRA(react-scripts 5)에
 // 번들된 Jest는 아직 package.json "exports" 맵을 지원하지 않아 react-router-dom
@@ -8,4 +9,9 @@ import { fetchPosts, fetchPost } from './api/posts';
 test('posts api exposes fetchPosts and fetchPost', () => {
   expect(typeof fetchPosts).toBe('function');
   expect(typeof fetchPost).toBe('function');
+});
+
+test('guestbook api exposes fetchGuestbook and createGuestbookEntry', () => {
+  expect(typeof fetchGuestbook).toBe('function');
+  expect(typeof createGuestbookEntry).toBe('function');
 });
