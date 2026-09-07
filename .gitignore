@@ -4,3 +4,4 @@ node_modules/
 Thumbs.db
 *.log
 backend/config.local.php
+frontend/.env.local
