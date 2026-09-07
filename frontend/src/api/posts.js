@@ -1,7 +1,9 @@
+import { authHeaders } from './auth';
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-async function request(path) {
-  const res = await fetch(`${API_BASE_URL}${path}`);
+async function request(path, options = {}) {
+  const res = await fetch(`${API_BASE_URL}${path}`, options);
   const body = await res.json();
 
   if (body.status !== 'ok') {
@@ -17,4 +19,20 @@ export function fetchPosts() {
 
 export function fetchPost(id) {
   return request(`/get_post.php?id=${encodeURIComponent(id)}`);
+}
+
+export function createPost({ title, content }) {
+  return request('/create_post.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ title, content }),
+  });
+}
+
+export function updatePost(id, { title, content }) {
+  return request('/update_post.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ id, title, content }),
+  });
 }

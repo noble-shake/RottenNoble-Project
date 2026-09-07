@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { fetchPost } from '../../api/posts';
+import { isLoggedIn } from '../../api/auth';
 
 function PostDetail() {
   const { id } = useParams();
@@ -31,6 +32,9 @@ function PostDetail() {
   return (
     <div style={{ padding: '20px' }}>
       <Link to="/">← 목록으로</Link>
+      {isLoggedIn() && (
+        <Link to={`/posts/${id}/edit`} style={{ marginLeft: '12px' }}>수정</Link>
+      )}
       <h1>{post.title}</h1>
       <small>{post.created_at}</small>
       <p style={{ whiteSpace: 'pre-wrap', marginTop: '16px' }}>{post.content}</p>

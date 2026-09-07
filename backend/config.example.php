@@ -11,4 +11,13 @@ return [
     'db_user' => 'root',
     'db_pass' => '',
     'db_name' => 'RottenNobleDB',
+
+    'redis' => [
+        'host' => 'localhost',
+        'port' => 6379,
+    ],
+
+    // password_hash('실제비밀번호', PASSWORD_BCRYPT)의 결과만 넣는다 — 평문 금지.
+    'admin_user' => 'admin',
+    'admin_password_hash' => '',
 ];
