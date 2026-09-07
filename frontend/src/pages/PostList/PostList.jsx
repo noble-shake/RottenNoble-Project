@@ -14,19 +14,21 @@ function PostList() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>불러오는 중…</p>;
-  if (error) return <p>게시글 목록을 불러오지 못했습니다: {error}</p>;
-
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>NAS 게시판</h1>
-      {posts.length === 0 && <p>게시글이 없습니다.</p>}
+    <div className="page">
+      <span className="eyebrow">Journal</span>
+      <h1>게시판</h1>
+
+      {loading && <p className="hint-text">불러오는 중…</p>}
+      {error && <p className="error-text">게시글 목록을 불러오지 못했습니다: {error}</p>}
+      {!loading && !error && posts.length === 0 && <p className="hint-text">게시글이 없습니다.</p>}
+
       {posts.map((post) => (
-        <div key={post.id} style={{ borderBottom: '1px solid #ccc', marginBottom: '10px', paddingBottom: '10px' }}>
+        <div key={post.id} className="post-item">
           <h3>
             <Link to={`/posts/${post.id}`}>{post.title}</Link>
           </h3>
-          <small>{post.created_at}</small>
+          <span className="meta">{post.created_at}</span>
         </div>
       ))}
     </div>

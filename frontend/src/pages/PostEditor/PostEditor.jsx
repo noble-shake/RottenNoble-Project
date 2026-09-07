@@ -37,35 +37,36 @@ function PostEditor() {
       .finally(() => setSubmitting(false));
   };
 
-  if (loading) return <p style={{ padding: '20px' }}>불러오는 중…</p>;
+  if (loading) return <div className="page"><p className="hint-text">불러오는 중…</p></div>;
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px' }}>
+    <div className="page">
+      <span className="eyebrow">{isEdit ? 'Edit' : 'New Entry'}</span>
       <h1>{isEdit ? '게시글 수정' : '새 게시글'}</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="field">
+          <label htmlFor="post-title">제목</label>
           <input
+            id="post-title"
             type="text"
-            placeholder="제목"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={255}
-            style={{ width: '100%' }}
             required
           />
         </div>
-        <div style={{ marginTop: '8px' }}>
+        <div className="field">
+          <label htmlFor="post-content">내용</label>
           <textarea
-            placeholder="내용"
+            id="post-content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            rows={10}
-            style={{ width: '100%' }}
+            rows={12}
             required
           />
         </div>
-        {error && <p style={{ color: 'crimson' }}>{error}</p>}
-        <button type="submit" disabled={submitting} style={{ marginTop: '8px' }}>
+        {error && <p className="error-text">{error}</p>}
+        <button type="submit" disabled={submitting}>
           {submitting ? '저장 중…' : '저장'}
         </button>
       </form>

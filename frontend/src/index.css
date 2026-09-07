@@ -1,13 +1,245 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* RottenNoble — "바랜 귀족(faded nobility)" 다크 테마 */
+
+:root {
+  --bg: #0f0d0c;
+  --surface: #1a1512;
+  --surface-2: #221b17;
+  --border: #3a2f24;
+  --ink: #ece4d8;
+  --ink-soft: #a8998a;
+  --ink-faint: #6f5f52;
+  --accent: #c19a5b;
+  --accent-soft: rgba(193, 154, 91, 0.14);
+  --accent-ink: #e4c88f;
+  --danger: #b8544a;
+  --danger-soft: rgba(184, 84, 74, 0.14);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.7);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  background-image: radial-gradient(circle at 20% 0%, rgba(193, 154, 91, 0.06), transparent 55%);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans KR', 'Noto Sans KR', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+a {
+  color: var(--accent-ink);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ---- layout ---- */
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+}
+
+.page-narrow {
+  max-width: 420px;
+}
+
+.page-wide {
+  max-width: 900px;
+}
+
+/* ---- nav ---- */
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), transparent);
+}
+
+.site-nav .brand {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-right: 20px;
+  letter-spacing: 0.02em;
+}
+
+.site-nav a,
+.site-nav button.link {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.site-nav a:hover,
+.site-nav button.link:hover {
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  text-decoration: none;
+}
+
+.site-nav .spacer {
+  flex: 1;
+}
+
+button.link {
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ---- cards / list items ---- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+}
+
+.post-item {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-item:first-child {
+  padding-top: 0;
+}
+
+.post-item:last-child {
+  border-bottom: none;
+}
+
+.post-item h3 {
+  font-size: 19px;
+  margin-bottom: 4px;
+}
+
+.meta {
+  color: var(--ink-faint);
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* ---- forms ---- */
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+input[type='text'],
+input[type='password'],
+textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14.5px;
+  transition: border-color 0.15s ease;
+}
+
+input[type='text']:focus,
+input[type='password']:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+button[type='submit'],
+.btn {
+  background: var(--accent);
+  color: #1a1310;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+
+button[type='submit']:hover,
+.btn:hover {
+  filter: brightness(1.1);
+}
+
+button[type='submit']:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--ink-soft);
+}
+
+.error-text {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  margin: 10px 0;
+}
+
+.hint-text {
+  color: var(--ink-faint);
+  font-size: 13px;
 }

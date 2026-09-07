@@ -37,23 +37,26 @@ function Guestbook() {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div className="page">
+      <span className="eyebrow">Guestbook</span>
       <h1>방명록</h1>
 
-      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-        <div>
+      <form onSubmit={handleSubmit} className="card" style={{ marginBottom: '28px' }}>
+        <div className="field">
+          <label htmlFor="gb-name">이름</label>
           <input
+            id="gb-name"
             type="text"
-            placeholder="이름"
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={50}
             required
           />
         </div>
-        <div style={{ marginTop: '8px' }}>
+        <div className="field">
+          <label htmlFor="gb-message">메시지</label>
           <textarea
-            placeholder="메시지"
+            id="gb-message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             maxLength={500}
@@ -61,21 +64,21 @@ function Guestbook() {
             required
           />
         </div>
-        {submitError && <p style={{ color: 'crimson' }}>{submitError}</p>}
-        <button type="submit" disabled={submitting} style={{ marginTop: '8px' }}>
+        {submitError && <p className="error-text">{submitError}</p>}
+        <button type="submit" disabled={submitting}>
           {submitting ? '등록 중…' : '남기기'}
         </button>
       </form>
 
-      {loading && <p>불러오는 중…</p>}
-      {loadError && <p>방명록을 불러오지 못했습니다: {loadError}</p>}
-      {!loading && !loadError && entries.length === 0 && <p>아직 방명록이 없습니다.</p>}
+      {loading && <p className="hint-text">불러오는 중…</p>}
+      {loadError && <p className="error-text">방명록을 불러오지 못했습니다: {loadError}</p>}
+      {!loading && !loadError && entries.length === 0 && <p className="hint-text">아직 방명록이 없습니다.</p>}
 
       {entries.map((entry) => (
-        <div key={entry.id} style={{ borderBottom: '1px solid #ccc', marginBottom: '10px', paddingBottom: '10px' }}>
+        <div key={entry.id} className="post-item">
           <strong>{entry.name}</strong>
-          <p style={{ whiteSpace: 'pre-wrap' }}>{entry.message}</p>
-          <small>{entry.created_at}</small>
+          <p style={{ whiteSpace: 'pre-wrap', margin: '6px 0' }}>{entry.message}</p>
+          <span className="meta">{entry.created_at}</span>
         </div>
       ))}
     </div>

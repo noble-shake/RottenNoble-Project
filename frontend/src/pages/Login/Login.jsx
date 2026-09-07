@@ -23,29 +23,32 @@ function Login() {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '320px' }}>
+    <div className="page page-narrow">
+      <span className="eyebrow">Private</span>
       <h1>관리자 로그인</h1>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="field">
+          <label htmlFor="login-username">아이디</label>
           <input
+            id="login-username"
             type="text"
-            placeholder="아이디"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
-        <div style={{ marginTop: '8px' }}>
+        <div className="field">
+          <label htmlFor="login-password">비밀번호</label>
           <input
+            id="login-password"
             type="password"
-            placeholder="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        {error && <p style={{ color: 'crimson' }}>{error}</p>}
-        <button type="submit" disabled={submitting} style={{ marginTop: '8px' }}>
+        {error && <p className="error-text">{error}</p>}
+        <button type="submit" disabled={submitting}>
           {submitting ? '로그인 중…' : '로그인'}
         </button>
       </form>
