@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import PostList from './pages/PostList/PostList';
 import PostDetail from './pages/PostDetail/PostDetail';
 import Guestbook from './pages/Guestbook/Guestbook';
@@ -38,7 +38,7 @@ function Nav() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Nav />
       <Routes>
         <Route path="/" element={<PostList />} />
@@ -48,7 +48,7 @@ function App() {
         <Route path="/guestbook" element={<Guestbook />} />
         <Route path="/login" element={<Login />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
