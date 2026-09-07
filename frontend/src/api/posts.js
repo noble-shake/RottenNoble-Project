@@ -36,3 +36,11 @@ export function updatePost(id, { title, content }) {
     body: JSON.stringify({ id, title, content }),
   });
 }
+
+export function deletePost(id) {
+  return request('/delete_post.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: JSON.stringify({ id }),
+  });
+}
