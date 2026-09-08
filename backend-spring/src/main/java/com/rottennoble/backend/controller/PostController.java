@@ -3,6 +3,7 @@ package com.rottennoble.backend.controller;
 import com.rottennoble.backend.dto.ApiResponse;
 import com.rottennoble.backend.dto.PostRequest;
 import com.rottennoble.backend.dto.PostResponse;
+import com.rottennoble.backend.security.RateLimit;
 import com.rottennoble.backend.security.RequireAdmin;
 import com.rottennoble.backend.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -39,19 +40,23 @@ public class PostController {
         return ApiResponse.ok(postService.getById(id));
     }
 
+    // 관리자 전용이지만, 탈취된/브루트포스된 토큰으로도 분당 요청 폭주는 못 하게 IP당 분당 60회로 제한.
     @RequireAdmin
+    @RateLimit(limit = 60, windowSeconds = 60)
     @PostMapping
     public ResponseEntity<ApiResponse<PostResponse>> create(@RequestBody PostRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(postService.create(request)));
     }
 
     @RequireAdmin
+    @RateLimit(limit = 60, windowSeconds = 60)
     @PutMapping("/{id}")
     public ApiResponse<PostResponse> update(@PathVariable int id, @RequestBody PostRequest request) {
         return ApiResponse.ok(postService.update(id, request));
     }
 
     @RequireAdmin
+    @RateLimit(limit = 60, windowSeconds = 60)
     @DeleteMapping("/{id}")
     public ApiResponse<Map<String, Object>> delete(@PathVariable int id) {
         postService.delete(id);

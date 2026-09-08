@@ -1,6 +1,7 @@
 package com.rottennoble.backend.config;
 
 import com.rottennoble.backend.security.AdminSessionInterceptor;
+import com.rottennoble.backend.security.RateLimitInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -10,13 +11,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final AdminSessionInterceptor adminSessionInterceptor;
+    private final RateLimitInterceptor rateLimitInterceptor;
 
-    public WebConfig(AdminSessionInterceptor adminSessionInterceptor) {
+    public WebConfig(AdminSessionInterceptor adminSessionInterceptor, RateLimitInterceptor rateLimitInterceptor) {
         this.adminSessionInterceptor = adminSessionInterceptor;
+        this.rateLimitInterceptor = rateLimitInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // rate limit을 인증보다 먼저 걸어 무차별 대입 자체를 먼저 억제한다.
+        registry.addInterceptor(rateLimitInterceptor);
         registry.addInterceptor(adminSessionInterceptor);
     }
 
