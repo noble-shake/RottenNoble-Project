@@ -15,3 +15,7 @@ spring:
 admin:
   username: ${ADMIN_USERNAME}
   password-hash: ${ADMIN_PASSWORD_HASH}
+
+study:
+  # 컨테이너 내부 경로 — docker run -v로 NAS의 StudyProject git 체크아웃을 여기 마운트한다.
+  project-path: ${STUDY_PROJECT_PATH:/data/study-project}

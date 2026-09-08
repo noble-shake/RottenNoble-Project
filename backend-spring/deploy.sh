@@ -10,12 +10,20 @@ if [ ! -f .env.prod ]; then
   exit 1
 fi
 
+STUDY_PROJECT_DIR="${STUDY_PROJECT_DIR:-/volume1/docker/StudyProject}"
+if [ ! -d "$STUDY_PROJECT_DIR" ]; then
+  echo "$STUDY_PROJECT_DIR 가 없습니다 — StudyProject를 여기에 clone 해두세요:"
+  echo "  git clone https://github.com/noble-shake/StudyProject $STUDY_PROJECT_DIR"
+  exit 1
+fi
+
 docker build -f Dockerfile.nas -t rottennoble-backend .
 docker rm -f rottennoble-backend 2>/dev/null || true
 docker run -d --name rottennoble-backend \
   --restart unless-stopped \
   -p 8080:8080 \
   --env-file .env.prod \
+  -v "$STUDY_PROJECT_DIR:/data/study-project:ro" \
   rottennoble-backend
 
 echo "기동 확인: curl http://localhost:8080/api/health"

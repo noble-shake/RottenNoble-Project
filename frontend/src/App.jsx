@@ -5,6 +5,8 @@ import PostDetail from './pages/PostDetail/PostDetail';
 import Guestbook from './pages/Guestbook/Guestbook';
 import Login from './pages/Login/Login';
 import PostEditor from './pages/PostEditor/PostEditor';
+import StudyList from './pages/StudyList/StudyList';
+import StudyDoc from './pages/StudyDoc/StudyDoc';
 import { isLoggedIn, logout } from './api/auth';
 
 function Nav() {
@@ -23,6 +25,7 @@ function Nav() {
       <span className="brand">Rotten Noble</span>
       <Link to="/">게시판</Link>
       <Link to="/guestbook">방명록</Link>
+      <Link to="/study">Study</Link>
       <span className="spacer" />
       {loggedIn ? (
         <>
@@ -46,6 +49,8 @@ function App() {
         <Route path="/posts/:id" element={<PostDetail />} />
         <Route path="/posts/:id/edit" element={<PostEditor />} />
         <Route path="/guestbook" element={<Guestbook />} />
+        <Route path="/study" element={<StudyList />} />
+        <Route path="/study/:category/:slug" element={<StudyDoc />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </HashRouter>

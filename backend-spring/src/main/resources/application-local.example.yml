@@ -16,3 +16,7 @@ admin:
   username: admin
   # password_hash('실제비밀번호', BCRYPT)의 결과만 넣는다 — 평문 금지.
   password-hash: ""
+
+study:
+  # 로컬 StudyProject git 체크아웃 경로 (예: git clone github.com/noble-shake/StudyProject)
+  project-path: ""
