@@ -24,7 +24,7 @@ function study_project_root(): string
 function resolve_study_doc_path(string $root, string $slug): ?string
 {
     $slug = str_replace('\\', '/', $slug);
-    if ($slug === '' || strpos($slug, '..') !== false) {
+    if ($slug === '' || strpos($slug, '..') !== false || is_study_menu_excluded($slug)) {
         return null;
     }
 
@@ -42,7 +42,23 @@ function resolve_study_doc_path(string $root, string $slug): ?string
     return $real;
 }
 
-// ComputerScience/ 아래 모든 .md 파일을 찾는다. `_TEMPLATE.md`, `*.flow.md`, `VIEWER/`는 제외.
+// RottenNoble-Project 자체를 다루는 저장소 개요/세션-일지 문서(2026-09-08 확인: "실제
+// RottenNobleProject 같은 내용이나 규약 내용들은 빼줄래" — 이런 건 Study가 아니라 나중에 만들
+// "작업물" 카테고리에 들어갈 예정). 개별 기술 개념 문서(CORS/PHP/React 등)는 이 저장소에서
+// 실제로 겪은 사례를 인용할 뿐 일반 지식이라 Study에 남긴다 — 여기서 빼는 건 "저장소 자체가
+// 주제인" 문서 두 개뿐이다.
+const STUDY_MENU_EXCLUDED_SLUGS = [
+    'ComputerScience/Architecture/RottenNoble-Project',
+    'ComputerScience/Architecture/RottenNobleProject-Architecture',
+];
+
+function is_study_menu_excluded(string $slug): bool
+{
+    return in_array(trim($slug, '/'), STUDY_MENU_EXCLUDED_SLUGS, true);
+}
+
+// ComputerScience/ 아래 모든 .md 파일을 찾는다. `_TEMPLATE.md`, `*.flow.md`, `VIEWER/`,
+// STUDY_MENU_EXCLUDED_SLUGS는 제외.
 function scan_study_docs(string $root): array
 {
     $csRoot = $root . '/ComputerScience';
@@ -66,7 +82,11 @@ function scan_study_docs(string $root): array
         if (substr($name, -3) !== '.md') {
             continue;
         }
-        $files[] = $fileInfo->getPathname();
+        $path = $fileInfo->getPathname();
+        if (is_study_menu_excluded(study_doc_slug($root, $path))) {
+            continue;
+        }
+        $files[] = $path;
     }
 
     sort($files);
