@@ -5,3 +5,5 @@ Thumbs.db
 *.log
 backend/config.local.php
 frontend/.env.local
+server/.env
+server/target/
