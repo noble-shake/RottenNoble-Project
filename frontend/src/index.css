@@ -243,3 +243,107 @@ button[type='submit']:disabled {
   color: var(--ink-faint);
   font-size: 13px;
 }
+
+/* ---- study (기존 카드/메타 스타일 재사용 — 새 시안 오기 전까지 신규 비주얼 투자 안 함) ---- */
+
+.study-group {
+  margin-top: 28px;
+}
+
+.study-group h2 {
+  font-size: 15px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+
+.study-body,
+.study-flow {
+  margin-top: 24px;
+}
+
+.study-body h2,
+.study-flow h2 {
+  font-size: 19px;
+  margin-top: 1.6em;
+}
+
+.study-body h3,
+.study-flow h3 {
+  font-size: 16px;
+  margin-top: 1.4em;
+}
+
+.study-body blockquote,
+.study-flow blockquote {
+  margin: 1em 0;
+  padding: 10px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.study-body pre,
+.study-flow pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.study-body code,
+.study-flow code {
+  background: var(--surface-2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.92em;
+}
+
+.study-body pre code,
+.study-flow pre code {
+  background: none;
+  padding: 0;
+}
+
+.study-table-wrap {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.study-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.study-table-wrap th,
+.study-table-wrap td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.study-table-wrap th {
+  background: var(--surface);
+  color: var(--ink-soft);
+}
+
+.study-flow.card {
+  margin-top: 32px;
+  padding: 20px 24px;
+}
+
+.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 12px;
+  overflow-x: auto;
+}

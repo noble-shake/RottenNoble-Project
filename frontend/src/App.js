@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import PostList from './pages/PostList/PostList';
 import PostDetail from './pages/PostDetail/PostDetail';
 import Guestbook from './pages/Guestbook/Guestbook';
 import Login from './pages/Login/Login';
 import PostEditor from './pages/PostEditor/PostEditor';
+import StudyList from './pages/Study/StudyList';
+import StudyDetail from './pages/Study/StudyDetail';
 import { isLoggedIn, logout } from './api/auth';
 
 function Nav() {
@@ -23,6 +25,7 @@ function Nav() {
       <span className="brand">Rotten Noble</span>
       <Link to="/">게시판</Link>
       <Link to="/guestbook">방명록</Link>
+      <Link to="/study">Study</Link>
       <span className="spacer" />
       {loggedIn ? (
         <>
@@ -37,6 +40,14 @@ function Nav() {
 }
 
 function App() {
+  useEffect(() => {
+    // Study 문서의 Mermaid 플로우차트를 렌더링하기 전에 한 번만 초기화해야 테마가 적용된다
+    // (StudyProject/VIEWER와 같은 패턴). public/index.html이 vendor/mermaid.min.js를 로드한다.
+    if (window.mermaid) {
+      window.mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+    }
+  }, []);
+
   return (
     <HashRouter>
       <Nav />
@@ -47,6 +58,8 @@ function App() {
         <Route path="/posts/:id/edit" element={<PostEditor />} />
         <Route path="/guestbook" element={<Guestbook />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/study" element={<StudyList />} />
+        <Route path="/study/*" element={<StudyDetail />} />
       </Routes>
     </HashRouter>
   );
