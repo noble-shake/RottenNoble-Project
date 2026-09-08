@@ -1,0 +1,17 @@
+# NAS Docker 배포용 프로필. 실제 값은 전부 환경변수로 주입한다(docker run -e 또는 docker-compose
+# environment) — backend/config.local.php처럼 비밀값을 파일에 직접 써서 git에 올리는 실수를
+# 반복하지 않기 위함(MEMO-WEB-01).
+
+spring:
+  datasource:
+    url: jdbc:mariadb://${DB_HOST}:${DB_PORT:3306}/${DB_NAME:RottenNobleDB}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+
+admin:
+  username: ${ADMIN_USERNAME}
+  password-hash: ${ADMIN_PASSWORD_HASH}

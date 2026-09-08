@@ -1,19 +1,20 @@
-# Rotten Noble Website Project
+# Rotten Noble
 
-React FrontEnd
+Synology NAS로 직접 운영하는 개인 포트폴리오 블로그(게시글 + 방명록).
 
-Apache PHP Backend
+- **프런트엔드**: React 19 + Vite (`frontend/`)
+- **백엔드**: Spring Boot 4.1.1 (Java 21) — `backend-spring/`. PHP 백엔드(`backend/`)는 2026-09-08 이관 후 레거시로 보관 중
+- **데이터베이스**: MariaDB 10
+- **인증**: Redis opaque 세션 토큰 (관리자 1명)
 
-using Synology server
+## 로컬 실행
 
+각 폴더의 README 참고:
+- [`backend-spring/README.md`](backend-spring/README.md)
+- [`frontend/README.md`](frontend/README.md)
 
-# My Personal Homepage Backend
-- **Environment**: XAMPP (Local), Synology NAS (Production)
-- **Language**: PHP 8.x
-- **Database**: MariaDB 10
-- **Frontend**: React (Planned)
+## 배포
 
-## 배포 방법
-1. Synology NAS의 `web` 폴더로 Git Clone
-2. Web Station에서 PHP 프로필 설정
-3. MariaDB 데이터베이스 생성 및 연결
+`rotten-noble.com`/`www.rotten-noble.com`은 NAS Web Station 정적 호스팅, 백엔드 API는
+`api.rotten-noble.com` 서브도메인 + DSM 역방향 프록시로 Docker 컨테이너(`backend-spring/`)에 연결.
+상세 절차는 [`backend-spring/README.md`](backend-spring/README.md) 참고.

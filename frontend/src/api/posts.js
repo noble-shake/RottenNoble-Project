@@ -1,6 +1,6 @@
 import { authHeaders } from './auth';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE_URL}${path}`, options);
@@ -14,15 +14,15 @@ async function request(path, options = {}) {
 }
 
 export function fetchPosts() {
-  return request('/get_posts.php');
+  return request('/posts');
 }
 
 export function fetchPost(id) {
-  return request(`/get_post.php?id=${encodeURIComponent(id)}`);
+  return request(`/posts/${encodeURIComponent(id)}`);
 }
 
 export function createPost({ title, content }) {
-  return request('/create_post.php', {
+  return request('/posts', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...authHeaders() },
     body: JSON.stringify({ title, content }),
@@ -30,17 +30,16 @@ export function createPost({ title, content }) {
 }
 
 export function updatePost(id, { title, content }) {
-  return request('/update_post.php', {
-    method: 'POST',
+  return request(`/posts/${encodeURIComponent(id)}`, {
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ id, title, content }),
+    body: JSON.stringify({ title, content }),
   });
 }
 
 export function deletePost(id) {
-  return request('/delete_post.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...authHeaders() },
-    body: JSON.stringify({ id }),
+  return request(`/posts/${encodeURIComponent(id)}`, {
+    method: 'DELETE',
+    headers: { ...authHeaders() },
   });
 }

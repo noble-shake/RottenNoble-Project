@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: backend
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    locations: classpath:db/migration
+    # 로컬 XAMPP/NAS 양쪽 다 PHP 시절 수동 schema.sql로 이미 posts/guestbook 테이블이 있는
+    # 상태에서 시작한다 — V1__init.sql 내용이 기존 스키마와 동일하므로 그 지점을 베이스라인으로
+    # 삼는다. 완전히 빈 DB에서는 이 옵션이 아무 영향도 없다(정상적으로 V1부터 실행됨).
+    baseline-on-migrate: true
+    baseline-version: 0
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    # 기본 INFO 레벨이면 Hibernate가 부팅 시 DB 접속 URL을 비밀번호 평문 포함해서 로그에 찍는다
+    # (jdbc:mariadb://host/db?user=...&password=...) — WARN으로 낮춰 방지.
+    org.hibernate.orm.connections.pooling: WARN
+
+admin:
+  session-ttl-seconds: 86400

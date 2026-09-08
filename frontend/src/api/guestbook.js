@@ -1,7 +1,7 @@
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function fetchGuestbook() {
-  const res = await fetch(`${API_BASE_URL}/get_guestbook.php`);
+  const res = await fetch(`${API_BASE_URL}/guestbook`);
   const body = await res.json();
 
   if (body.status !== 'ok') {
@@ -12,7 +12,7 @@ export async function fetchGuestbook() {
 }
 
 export async function createGuestbookEntry({ name, message }) {
-  const res = await fetch(`${API_BASE_URL}/create_guestbook_entry.php`, {
+  const res = await fetch(`${API_BASE_URL}/guestbook`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, message }),
