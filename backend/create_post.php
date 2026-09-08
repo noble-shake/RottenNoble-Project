@@ -2,6 +2,7 @@
 // backend/create_post.php
 require 'response.php';
 require 'auth.php';
+require __DIR__ . '/lib/rate_limit.php';
 require 'db.php';
 
 allow_cors(['POST']);
@@ -10,6 +11,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     $conn->close();
     send_error('POST만 허용됩니다.', 405);
 }
+
+// 유출된 토큰 재생/오작동 클라이언트로 인한 남용 방지(방어 심층화) — 관리자 1명 규모엔 넉넉한 한도.
+rate_limit_check('admin_write', 60, 60);
 
 require_admin();
 

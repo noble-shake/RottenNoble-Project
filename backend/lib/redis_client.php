@@ -74,6 +74,16 @@ class RedisClient
         return $this->command(['DEL', $key]);
     }
 
+    public function incr(string $key): int
+    {
+        return $this->command(['INCR', $key]);
+    }
+
+    public function expire(string $key, int $seconds): bool
+    {
+        return $this->command(['EXPIRE', $key, (string)$seconds]) === 1;
+    }
+
     public function close(): void
     {
         if ($this->socket) {

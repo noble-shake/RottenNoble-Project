@@ -2,6 +2,7 @@
 // backend/delete_post.php
 require 'response.php';
 require 'auth.php';
+require __DIR__ . '/lib/rate_limit.php';
 require 'db.php';
 
 allow_cors(['POST']);
@@ -10,6 +11,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     $conn->close();
     send_error('POST만 허용됩니다.', 405);
 }
+
+rate_limit_check('admin_write', 60, 60);
 
 require_admin();
 

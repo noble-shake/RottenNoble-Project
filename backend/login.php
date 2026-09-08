@@ -2,12 +2,16 @@
 // backend/login.php
 require 'response.php';
 require 'auth.php';
+require __DIR__ . '/lib/rate_limit.php';
 
 allow_cors(['POST']);
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     send_error('POST만 허용됩니다.', 405);
 }
+
+// 무차별 대입 방지 — 성공/실패와 무관하게 IP당 5분에 5회로 제한한다.
+rate_limit_check('login', 5, 300);
 
 $body = json_decode(file_get_contents('php://input'), true);
 $username = trim((string)($body['username'] ?? ''));
