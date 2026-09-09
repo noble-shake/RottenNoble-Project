@@ -1,0 +1,45 @@
+name: Deploy Blog
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, nas]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy frontend
+        run: |
+          rm -rf /volume1/web/rotten-noble/public/assets
+          cp -r frontend/dist/. /volume1/web/rotten-noble/public/
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build backend
+        working-directory: backend-spring
+        run: ./mvnw clean package -DskipTests
+
+      - name: Deploy backend
+        run: |
+          cp backend-spring/target/backend-0.0.1-SNAPSHOT.jar /volume1/docker/rottennoble-backend/backend-0.0.1-SNAPSHOT.jar
+          cp backend-spring/Dockerfile.nas /volume1/docker/rottennoble-backend/Dockerfile.nas
+          cp backend-spring/deploy.sh /volume1/docker/rottennoble-backend/deploy.sh
+          sudo /bin/sh /volume1/docker/rottennoble-backend/deploy.sh
