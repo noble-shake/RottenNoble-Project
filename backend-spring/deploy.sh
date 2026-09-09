@@ -3,6 +3,7 @@
 # (docker.sock이 root:root 소유라 sudo가 필요 — 비밀번호는 이 스크립트를 실행하는
 # 사람이 직접 입력한다.)
 set -e
+export PATH="/usr/local/bin:$PATH"
 cd "$(dirname "$0")"
 
 if [ ! -f .env.prod ]; then
