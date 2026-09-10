@@ -47,14 +47,14 @@ void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution.xy;
   vec2 p = (uv - 0.5) * vec2(u_resolution.x / u_resolution.y, 1.0);
 
-  vec2 drift = u_time * vec2(0.05, 0.032);
+  vec2 drift = u_time * vec2(0.15, 0.095);
   float n = fbm(p * 2.2 + drift);
 
-  vec3 deep = vec3(0.012, 0.012, 0.03);
-  vec3 violet = vec3(0.16, 0.09, 0.30);
-  vec3 magenta = vec3(0.42, 0.15, 0.40);
-  vec3 col = mix(deep, violet, smoothstep(0.3, 0.7, n));
-  col = mix(col, magenta, smoothstep(0.65, 0.95, n) * u_glow);
+  vec3 deep = vec3(0.01, 0.02, 0.045);
+  vec3 midBlue = vec3(0.09, 0.26, 0.52);
+  vec3 pastelBlue = vec3(0.48, 0.72, 0.98);
+  vec3 col = mix(deep, midBlue, smoothstep(0.22, 0.58, n));
+  col = mix(col, pastelBlue, smoothstep(0.5, 0.82, n) * u_glow);
 
   // 셀당 1점 보로노이(Worley) 스타일 샘플링 — 격자 정중앙 대신 셀 안에서 랜덤하게 흔든 점에 별을 찍는다.
   vec2 starGrid = p * 220.0;
@@ -145,12 +145,13 @@ function useShaderCanvas(canvasRef, glowRef) {
 
 function SiteBackground() {
   const canvasRef = useRef(null);
-  const glowRef = useRef(0.6);
+  const glowRef = useRef(0.75);
   const location = useLocation();
   const isHome = location.pathname === '/';
 
   useEffect(() => {
-    glowRef.current = isHome ? 0.6 : 0.42;
+    // 홈/그 외 페이지의 밝기 차이를 키워서 블러 전환이 더 뚜렷하게 느껴지도록 한다.
+    glowRef.current = isHome ? 0.75 : 0.28;
   }, [isHome]);
 
   useShaderCanvas(canvasRef, glowRef);
