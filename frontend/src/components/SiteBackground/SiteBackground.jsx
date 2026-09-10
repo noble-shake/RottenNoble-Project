@@ -47,7 +47,8 @@ void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution.xy;
   vec2 p = (uv - 0.5) * vec2(u_resolution.x / u_resolution.y, 1.0);
 
-  float n = fbm(p * 2.2 + u_time * 0.01);
+  vec2 drift = u_time * vec2(0.05, 0.032);
+  float n = fbm(p * 2.2 + drift);
 
   vec3 deep = vec3(0.012, 0.012, 0.03);
   vec3 violet = vec3(0.16, 0.09, 0.30);
@@ -154,7 +155,10 @@ function SiteBackground() {
   return (
     <>
       <canvas ref={canvasRef} id="bg-canvas" aria-hidden="true" />
-      {!isHome && <div className="bg-blur-overlay" aria-hidden="true" />}
+      <div
+        className={`bg-blur-overlay${isHome ? '' : ' bg-blur-overlay--active'}`}
+        aria-hidden="true"
+      />
     </>
   );
 }
