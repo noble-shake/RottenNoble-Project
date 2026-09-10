@@ -56,13 +56,16 @@ void main() {
   vec3 col = mix(deep, violet, smoothstep(0.3, 0.7, n));
   col = mix(col, magenta, smoothstep(0.65, 0.95, n) * u_glow);
 
+  // 셀당 1점 보로노이(Worley) 스타일 샘플링 — 격자 정중앙 대신 셀 안에서 랜덤하게 흔든 점에 별을 찍는다.
   vec2 starGrid = p * 220.0;
   vec2 gi = floor(starGrid);
   vec2 gf = fract(starGrid) - 0.5;
-  float starHash = hash(gi);
+  vec2 jitter = vec2(hash(gi + 0.17), hash(gi + 5.31)) - 0.5;
+  float starHash = hash(gi + 11.7);
   float starMask = step(0.9965, starHash);
+  float starDist = length(gf - jitter * 0.8);
   float twinkle = 0.6 + 0.4 * sin(u_time * 2.0 + starHash * 40.0);
-  float star = starMask * (1.0 - smoothstep(0.0, 0.5, length(gf))) * twinkle;
+  float star = starMask * (1.0 - smoothstep(0.0, 0.5, starDist)) * twinkle;
   col += vec3(0.9, 0.92, 1.0) * star;
 
   float vig = smoothstep(1.05, 0.15, length(uv - 0.5) * 1.3);
