@@ -243,3 +243,38 @@ button[type='submit']:disabled {
   color: var(--ink-faint);
   font-size: 13px;
 }
+
+/* ---- study view toggle ---- */
+
+.study-viewmode {
+  display: flex;
+  gap: 2px;
+  width: fit-content;
+  margin: 18px 0 4px;
+  padding: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.study-modebtn {
+  padding: 7px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.study-modebtn:hover {
+  color: var(--ink);
+}
+
+.study-modebtn.active {
+  background: var(--accent);
+  color: #1a1310;
+}

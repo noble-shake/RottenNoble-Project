@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -26,6 +27,9 @@ public class StudyDocService {
 
     private static final Logger log = LoggerFactory.getLogger(StudyDocService.class);
     private static final Pattern SAFE_SEGMENT = Pattern.compile("^[A-Za-z0-9_.-]+$");
+    // StudyProject/_TEMPLATE.md 메타 블록의 "- **관련 레포지토리**: `X`" 줄에서 저장소명만 뽑는다 —
+    // StudyProject/VIEWER/index.html의 extractRepo()와 같은 규칙(첫 백틱 값만 취급, `-`는 무시).
+    private static final Pattern REPO_FIELD = Pattern.compile("\\*\\*관련\\s*레포지토리\\*\\*\\s*:\\s*`([^`]+)`");
     private static final Set<String> EXCLUDED_RELATIVE_PATHS = Set.of(
             "Architecture/RottenNoble-Project.md",
             "Architecture/RottenNobleProject-Architecture.md"
@@ -96,8 +100,10 @@ public class StudyDocService {
         String category = relative.substring(0, relative.indexOf('/'));
         String fileName = file.getFileName().toString();
         String slug = fileName.substring(0, fileName.length() - ".md".length());
-        String title = extractTitle(readFile(file));
-        return new StudyDocSummary(category, slug, title);
+        String content = readFile(file);
+        String title = extractTitle(content);
+        String repo = extractRepo(content);
+        return new StudyDocSummary(category, slug, title, repo);
     }
 
     private String relativePath(Path file) {
@@ -107,5 +113,12 @@ public class StudyDocService {
     private String extractTitle(String content) {
         String firstLine = content.lines().findFirst().orElse("");
         return firstLine.replaceFirst("^#+\\s*", "").trim();
+    }
+
+    private String extractRepo(String content) {
+        Matcher m = REPO_FIELD.matcher(content);
+        if (!m.find()) return null;
+        String value = m.group(1).trim();
+        return (value.isEmpty() || value.equals("-")) ? null : value;
     }
 }
