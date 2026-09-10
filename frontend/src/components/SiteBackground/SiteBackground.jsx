@@ -88,6 +88,8 @@ function useShaderCanvas(canvasRef, glowRef) {
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    // TODO(나중에): WebGL 실패 시 / 수동 끄기 토글 추가 시, 여기서 캔버스를 비워두는 대신
+    // 블러 오버레이는 유지한 채 배경을 정적 이미지로 교체한다 (지금은 그냥 빈 캔버스로 폴백).
     if (!gl) return undefined;
 
     const vertexShader = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SRC);
