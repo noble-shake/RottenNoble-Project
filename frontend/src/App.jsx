@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { HashRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import Home from './pages/Home/Home';
 import PostList from './pages/PostList/PostList';
 import PostDetail from './pages/PostDetail/PostDetail';
 import Guestbook from './pages/Guestbook/Guestbook';
@@ -7,6 +8,7 @@ import Login from './pages/Login/Login';
 import PostEditor from './pages/PostEditor/PostEditor';
 import StudyList from './pages/StudyList/StudyList';
 import StudyDoc from './pages/StudyDoc/StudyDoc';
+import SiteBackground from './components/SiteBackground/SiteBackground';
 import { isLoggedIn, logout } from './api/auth';
 
 function Nav() {
@@ -22,8 +24,8 @@ function Nav() {
 
   return (
     <nav className="site-nav">
-      <span className="brand">Rotten Noble</span>
-      <Link to="/">게시판</Link>
+      <Link className="brand" to="/">Rotten Noble</Link>
+      <Link to="/posts">게시판</Link>
       <Link to="/guestbook">방명록</Link>
       <Link to="/study">Study</Link>
       <span className="spacer" />
@@ -42,17 +44,21 @@ function Nav() {
 function App() {
   return (
     <HashRouter>
-      <Nav />
-      <Routes>
-        <Route path="/" element={<PostList />} />
-        <Route path="/posts/new" element={<PostEditor />} />
-        <Route path="/posts/:id" element={<PostDetail />} />
-        <Route path="/posts/:id/edit" element={<PostEditor />} />
-        <Route path="/guestbook" element={<Guestbook />} />
-        <Route path="/study" element={<StudyList />} />
-        <Route path="/study/:category/:slug" element={<StudyDoc />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <SiteBackground />
+      <div className="app-content">
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/posts" element={<PostList />} />
+          <Route path="/posts/new" element={<PostEditor />} />
+          <Route path="/posts/:id" element={<PostDetail />} />
+          <Route path="/posts/:id/edit" element={<PostEditor />} />
+          <Route path="/guestbook" element={<Guestbook />} />
+          <Route path="/study" element={<StudyList />} />
+          <Route path="/study/:category/:slug" element={<StudyDoc />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
     </HashRouter>
   );
 }
