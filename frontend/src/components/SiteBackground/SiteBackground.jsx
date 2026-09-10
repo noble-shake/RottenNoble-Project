@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-// 다크 톤 + 청록빛 은근한 광원, fBm(value noise) 기반 절차적 배경.
+// 다크 남색 바탕 + 보라/자주빛 성운 먼지 + 잔별, 2옥타브 fBm 루프 기반 절차적 배경.
+// 옥타브 수를 2로 낮추고 별은 마스크 1패스로 처리해 GPU 비용을 가볍게 유지했다.
 // 외부 텍스처/에셋 없이 GLSL만으로 그린다.
 const VERTEX_SRC = `
 attribute vec2 a_pos;
@@ -11,7 +12,7 @@ void main() {
 `;
 
 const FRAGMENT_SRC = `
-precision highp float;
+precision mediump float;
 uniform vec2 u_resolution;
 uniform float u_time;
 uniform float u_glow;
@@ -33,29 +34,38 @@ float noise(vec2 p) {
 }
 float fbm(vec2 p) {
   float v = 0.0;
-  float amp = 0.55;
-  mat2 rot = mat2(0.8, 0.6, -0.6, 0.8);
-  for (int i = 0; i < 5; i++) {
-    v += amp * noise(p);
-    p = rot * p * 2.02;
+  float amp = 0.6;
+  float freq = 1.0;
+  for (int i = 0; i < 2; i++) {
+    v += amp * noise(p * freq);
+    freq *= 2.15;
     amp *= 0.55;
   }
   return v;
 }
 void main() {
   vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-  vec2 p = (uv - 0.5) * vec2(u_resolution.x / u_resolution.y, 1.0) * 3.0;
-  vec2 q = vec2(fbm(p + u_time * 0.03), fbm(p + vec2(5.2, 1.3) - u_time * 0.025));
-  float n = fbm(p + 2.4 * q + u_time * 0.015);
+  vec2 p = (uv - 0.5) * vec2(u_resolution.x / u_resolution.y, 1.0);
 
-  vec3 deep = vec3(0.02, 0.035, 0.045);
-  vec3 teal = vec3(0.09, 0.32, 0.34);
-  vec3 tealBright = vec3(0.20, 0.62, 0.60);
-  vec3 col = mix(deep, teal, smoothstep(0.25, 0.65, n));
-  col = mix(col, tealBright, smoothstep(0.6, 0.95, n) * u_glow);
+  float n = fbm(p * 2.2 + u_time * 0.01);
 
-  float vig = smoothstep(1.1, 0.2, length(uv - 0.5) * 1.4);
-  col *= mix(0.55, 1.0, vig);
+  vec3 deep = vec3(0.012, 0.012, 0.03);
+  vec3 violet = vec3(0.16, 0.09, 0.30);
+  vec3 magenta = vec3(0.42, 0.15, 0.40);
+  vec3 col = mix(deep, violet, smoothstep(0.3, 0.7, n));
+  col = mix(col, magenta, smoothstep(0.65, 0.95, n) * u_glow);
+
+  vec2 starGrid = p * 220.0;
+  vec2 gi = floor(starGrid);
+  vec2 gf = fract(starGrid) - 0.5;
+  float starHash = hash(gi);
+  float starMask = step(0.9965, starHash);
+  float twinkle = 0.6 + 0.4 * sin(u_time * 2.0 + starHash * 40.0);
+  float star = starMask * (1.0 - smoothstep(0.0, 0.5, length(gf))) * twinkle;
+  col += vec3(0.9, 0.92, 1.0) * star;
+
+  float vig = smoothstep(1.05, 0.15, length(uv - 0.5) * 1.3);
+  col *= mix(0.6, 1.0, vig);
 
   gl_FragColor = vec4(col, 1.0);
 }
